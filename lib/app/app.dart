@@ -49,9 +49,7 @@ class CatApp extends StatelessWidget {
               color: Color(0xFF222222),
               fontWeight: FontWeight.bold,
             ),
-            bodyMedium: TextStyle(
-              color: Color(0xFF444444),
-            ),
+            bodyMedium: TextStyle(color: Color(0xFF444444)),
           ),
           useMaterial3: true,
         ),
