@@ -39,13 +39,34 @@ class VotingScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  breed.name,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold,
+                Column(
+                  children: [
+                    Text(
+                      breed.name,
+                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                            color: Color(0xFF7D63C8), // violeta fuerte
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.2,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black12,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      width: 80,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFA28CF6).withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(2),
                       ),
-                  textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
                 Material(
@@ -76,7 +97,34 @@ class VotingScreen extends StatelessWidget {
                           background: Container(),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(24),
-                            child: BreedImagesCarousel(images: images),
+                            child: images.isNotEmpty
+                                ? Container(
+                                    width: double.infinity,
+                                    height: 220,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
+                                    child: Image.network(
+                                      images.first,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: 220,
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return const Center(child: CircularProgressIndicator());
+                                      },
+                                      errorBuilder: (context, error, stackTrace) => Container(
+                                        color: Colors.grey[200],
+                                        child: const Center(child: Icon(Icons.image_not_supported, color: Colors.grey)),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: double.infinity,
+                                    height: 220,
+                                    color: Colors.grey[200],
+                                    child: const Center(child: Icon(Icons.image_not_supported, color: Colors.grey)),
+                                  ),
                           ),
                         );
                       },
@@ -89,13 +137,13 @@ class VotingScreen extends StatelessWidget {
                   children: [
                     // Botón Dislike
                     Material(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Color(0xFFFF4F4F), // rojo
                       shape: const CircleBorder(),
                       elevation: 4,
                       child: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.thumb_down,
-                          color: Theme.of(context).colorScheme.onSecondary,
+                          color: Colors.white,
                           size: 32,
                         ),
                         onPressed: () => provider.vote(false),
@@ -104,13 +152,13 @@ class VotingScreen extends StatelessWidget {
                     ),
                     // Botón Like
                     Material(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Color(0xFF4F8FFF), // azul
                       shape: const CircleBorder(),
                       elevation: 4,
                       child: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.thumb_up,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: Colors.white,
                           size: 32,
                         ),
                         onPressed: () => provider.vote(true),

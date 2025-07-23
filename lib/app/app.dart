@@ -38,6 +38,7 @@ class CatApp extends StatelessWidget {
             foregroundColor: Colors.white,
             elevation: 0,
           ),
+
           iconTheme: const IconThemeData(color: Color(0xFF7D63C8)), // violeta
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
             backgroundColor: Color(0xFFA28CF6), // lila

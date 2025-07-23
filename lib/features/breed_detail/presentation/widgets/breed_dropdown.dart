@@ -9,19 +9,56 @@ class BreedDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<BreedProvider>(context);
-    return DropdownButton<Breed>(
-      value: provider.selectedBreed,
-      hint: const Text('Selecciona una raza'),
-      items: provider.breeds.map((breed) {
-        return DropdownMenuItem<Breed>(
-          value: breed,
-          child: Text(breed.name),
-        );
-      }).toList(),
-      onChanged: (breed) {
-        if (breed != null) provider.selectBreed(breed);
-      },
-      isExpanded: true,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<Breed>(
+          value: provider.selectedBreed,
+          hint: Text(
+            'Selecciona una raza',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          icon: Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: Theme.of(context).colorScheme.primary,
+            size: 32,
+          ),
+          items: provider.breeds.map((breed) {
+            return DropdownMenuItem<Breed>(
+              value: breed,
+              child: Text(
+                breed.name,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+            );
+          }).toList(),
+          onChanged: (breed) {
+            if (breed != null) provider.selectBreed(breed);
+          },
+          isExpanded: true,
+          dropdownColor: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
     );
   }
 }

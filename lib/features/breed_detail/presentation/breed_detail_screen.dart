@@ -22,13 +22,21 @@ class BreedDetailScreen extends StatelessWidget {
             return Center(child: Text('Error: ${provider.error}'));
           }
           return Scaffold(
-            appBar: AppBar(title: const Text('Detalle de Raza')),
+            appBar: AppBar(
+              title: const Text('Detalle de Raza'),
+              backgroundColor: const Color(0xFFA28CF6),
+            ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    // Si se agrega un TabBar, usar este patrón:
+                    // Container(
+                    //   color: Color(0xFFA28CF6),
+                    //   child: TabBar(...),
+                    // ),
                     const BreedDropdown(),
                     const SizedBox(height: 16),
                     if (provider.loading && provider.selectedBreed != null)
