@@ -41,57 +41,81 @@ class VotingScreen extends StatelessWidget {
               children: [
                 Text(
                   breed.name,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  height: 220,
-                  child: FutureBuilder<List<String>>(
-                    future: provider.repo.getBreedImages(breed.id, limit: 1),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      final images = snapshot.data ?? [];
-                      // Solo una imagen por raza
-                      return Dismissible(
-                        key: ValueKey(breed.id),
-                        direction: DismissDirection
-                            .endToStart, // Solo swipe a la izquierda
-                        confirmDismiss: (direction) async {
-                          return direction == DismissDirection.endToStart;
-                        },
-                        onDismissed: (direction) {
-                          if (direction == DismissDirection.endToStart) {
-                            provider.vote(false);
-                          }
-                        },
-                        background: Container(),
-                        child: BreedImagesCarousel(images: images),
-                      );
-                    },
+                Material(
+                  elevation: 6,
+                  borderRadius: BorderRadius.circular(24),
+                  color: Theme.of(context).colorScheme.surface,
+                  child: SizedBox(
+                    height: 220,
+                    child: FutureBuilder<List<String>>(
+                      future: provider.repo.getBreedImages(breed.id, limit: 1),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                        final images = snapshot.data ?? [];
+                        // Solo una imagen por raza
+                        return Dismissible(
+                          key: ValueKey(breed.id),
+                          direction: DismissDirection.endToStart, // Solo swipe a la izquierda
+                          confirmDismiss: (direction) async {
+                            return direction == DismissDirection.endToStart;
+                          },
+                          onDismissed: (direction) {
+                            if (direction == DismissDirection.endToStart) {
+                              provider.vote(false);
+                            }
+                          },
+                          background: Container(),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(24),
+                            child: BreedImagesCarousel(images: images),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.thumb_down,
-                        color: Colors.red,
-                        size: 36,
+                    // Botón Dislike
+                    Material(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: const CircleBorder(),
+                      elevation: 4,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.thumb_down,
+                          color: Theme.of(context).colorScheme.onSecondary,
+                          size: 32,
+                        ),
+                        onPressed: () => provider.vote(false),
+                        splashRadius: 32,
                       ),
-                      onPressed: () => provider.vote(false),
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.thumb_up,
-                        color: Colors.green,
-                        size: 36,
+                    // Botón Like
+                    Material(
+                      color: Theme.of(context).colorScheme.primary,
+                      shape: const CircleBorder(),
+                      elevation: 4,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.thumb_up,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          size: 32,
+                        ),
+                        onPressed: () => provider.vote(true),
+                        splashRadius: 32,
                       ),
-                      onPressed: () => provider.vote(true),
                     ),
                   ],
                 ),
