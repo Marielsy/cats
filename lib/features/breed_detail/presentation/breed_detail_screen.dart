@@ -23,7 +23,7 @@ class BreedDetailScreen extends StatelessWidget {
           }
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Detalle de Raza'),
+              title: const Text('Detalles de la Raza'),
               backgroundColor: const Color(0xFFA28CF6),
             ),
             body: Padding(
