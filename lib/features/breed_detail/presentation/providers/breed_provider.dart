@@ -4,7 +4,11 @@ import '../../data/datasources/breed_api_service.dart';
 import '../../data/repositories/breed_repository_impl.dart';
 
 class BreedProvider extends ChangeNotifier {
-  final _repository = BreedRepositoryImpl(BreedApiService());
+  final BreedRepositoryImpl _repository;
+
+  // Permite inyectar el repositorio (útil para tests)
+  BreedProvider({BreedRepositoryImpl? repository})
+      : _repository = repository ?? BreedRepositoryImpl(BreedApiService());
 
   List<Breed> _breeds = [];
   List<Breed> get breeds => _breeds;

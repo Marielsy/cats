@@ -5,7 +5,10 @@ import '../../../breed_detail/data/repositories/breed_repository_impl.dart';
 import '../../../breed_detail/data/datasources/breed_api_service.dart';
 
 class VotingProvider extends ChangeNotifier {
-  final BreedRepositoryImpl repo = BreedRepositoryImpl(BreedApiService());
+  final BreedRepositoryImpl repo;
+
+  VotingProvider({BreedRepositoryImpl? repository})
+      : repo = repository ?? BreedRepositoryImpl(BreedApiService());
   List<Breed> _breeds = [];
   List<String> _votedBreeds = [];
   Breed? _currentBreed;
