@@ -5,6 +5,8 @@ import '../presentation/widgets/breed_dropdown.dart';
 import '../presentation/widgets/breed_images_carousel.dart';
 import '../../breed_detail/domain/models/breed.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'wikipedia_webview.dart';
+
 
 class BreedDetailScreen extends StatelessWidget {
   const BreedDetailScreen({super.key});
@@ -90,17 +92,20 @@ class _BreedDetails extends StatelessWidget {
                 child: TextButton(
                   child: const Text('Ver en Wikipedia'),
                   onPressed: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => const Dialog(
+  backgroundColor: Colors.transparent,
+  elevation: 0,
+  child: Center(child: CircularProgressIndicator()),
+),
+                    );
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => Scaffold(
-                          appBar: AppBar(title: Text('Wikipedia: ${breed.name}')),
-                          body: WebViewWidget(
-                            controller: WebViewController()
-                              ..loadRequest(Uri.parse(breed.wikipediaUrl!)),
-                          ),
-                        ),
+                        builder: (_) => WikipediaWebView(url: breed.wikipediaUrl!, breedName: breed.name),
                       ),
-                    );
+                    ).then((_) => Navigator.of(context, rootNavigator: true).pop());
                   },
                 ),
               ),
